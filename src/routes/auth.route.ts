@@ -4,7 +4,7 @@ import { CreateUserDto } from '@dtos/users.dto';
 import { Routes } from '@interfaces/routes.interface';
 import authMiddleware from '@middlewares/auth.middleware';
 import validationMiddleware from '@middlewares/validation.middleware';
-import { AuthUserDto } from '@/dtos/auth.dto';
+import { AuthUserDto } from '@dtos/auth.dto';
 
 class AuthRoute implements Routes {
   public path = '/';

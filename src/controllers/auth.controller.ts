@@ -3,7 +3,7 @@ import { CreateUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import AuthService from '@services/auth.service';
-import { AuthUserDto } from '@/dtos/auth.dto';
+import { AuthUserDto } from '@dtos/auth.dto';
 
 class AuthController {
   public authService = new AuthService();
