@@ -7,6 +7,7 @@ import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import { isEmpty } from '@utils/util';
+import { AuthUserDto } from '@/dtos/auth.dto';
 
 class AuthService {
   public users = DB.Users;
@@ -23,7 +24,7 @@ class AuthService {
     return createUserData;
   }
 
-  public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
+  public async login(userData: AuthUserDto): Promise<{ cookie: string; findUser: User }> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
     const findUser: User = await this.users.findOne({ where: { email: userData.email } });
