@@ -3,6 +3,7 @@ import { NODE_ENV, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } from '@
 import UserModel from '@models/users.model';
 import { logger } from '@utils/logger';
 import GroupModel from '@models/groups.model';
+import PostModel from '@/models/posts.model';
 
 const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   dialect: 'postgres',
@@ -35,6 +36,7 @@ try {
 const DB = {
   Users: UserModel(sequelize),
   Groups: GroupModel(sequelize),
+  Posts: PostModel(sequelize),
   sequelize, // connection instance (RAW queries)
   Sequelize, // library
 };

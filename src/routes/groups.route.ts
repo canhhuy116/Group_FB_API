@@ -4,7 +4,7 @@ import GroupsController from '@/controllers/groups.controller';
 import { Routes } from '@interfaces/routes.interface';
 import { CreateGroupDto } from '@dtos/groups.dto';
 
-class Groups implements Routes {
+class GroupsRoute implements Routes {
   public path = '/groups';
   public router = Router();
   public groupsController = new GroupsController();
@@ -22,4 +22,4 @@ class Groups implements Routes {
   }
 }
 
-export default Groups;
+export default GroupsRoute;
