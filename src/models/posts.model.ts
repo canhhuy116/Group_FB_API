@@ -17,7 +17,6 @@ export default function (sequelize: Sequelize): typeof PostModel {
   PostModel.init(
     {
       id: {
-        autoIncrement: true,
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
