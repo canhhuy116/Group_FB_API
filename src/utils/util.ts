@@ -17,3 +17,7 @@ export const isEmpty = (value: string | number | object): boolean => {
     return false;
   }
 };
+
+export const typeOf = (value: any): string => {
+  return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+};
