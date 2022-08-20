@@ -5,6 +5,7 @@ import { logger } from '@utils/logger';
 import GroupModel from '@models/groups.model';
 import PostModel from '@/models/posts.model';
 import CommentModel from '@/models/comments.model';
+import LikedPostModel from '@/models/likedPost.model';
 
 const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   dialect: 'postgres',
@@ -39,6 +40,7 @@ const DB = {
   Groups: GroupModel(sequelize),
   Posts: PostModel(sequelize),
   Comments: CommentModel(sequelize),
+  LikedPost: LikedPostModel(sequelize),
   sequelize, // connection instance (RAW queries)
   Sequelize, // library
 };
