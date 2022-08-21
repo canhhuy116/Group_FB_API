@@ -1,11 +1,12 @@
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { SECRET_KEY } from '@config';
+import { SECRET_KEY, REFRESH_TOKEN_KEY } from '@config';
 import DB from '@databases';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
+import { createRedisClient } from '@helpers/connectionRedis';
 
-const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+export const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const Authorization = req.cookies['Authorization'] || (req.header('Authorization') ? req.header('Authorization').split('Bearer ')[1] : null);
 
@@ -25,8 +26,32 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
       next(new HttpException(404, 'Authentication token missing'));
     }
   } catch (error) {
-    next(new HttpException(401, 'Wrong authentication token'));
+    next(new HttpException(401, error.message));
   }
 };
 
-export default authMiddleware;
+export const refreshTokenMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (refreshToken) {
+      const secretKey: string = REFRESH_TOKEN_KEY;
+      const verificationResponse = verify(refreshToken, secretKey) as DataStoredInToken;
+      const client = await createRedisClient();
+      const userId = verificationResponse.id;
+      const reply = await client.get(userId.toString());
+      const findUser = await DB.Users.findByPk(userId);
+
+      if (findUser && refreshToken === reply) {
+        req.user = findUser;
+        next();
+      } else {
+        next(new HttpException(401, 'Wrong refresh token'));
+      }
+    } else {
+      next(new HttpException(404, 'Authentication token missing'));
+    }
+  } catch (error) {
+    next(new HttpException(401, error.message));
+  }
+};

@@ -22,10 +22,10 @@ class AuthController {
   public logIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: AuthUserDto = req.body;
-      const { cookie, findUser } = await this.authService.login(userData);
+      const { cookie, refreshToken, findUser } = await this.authService.login(userData);
 
       res.setHeader('Set-Cookie', [cookie]);
-      res.status(200).json({ data: findUser, message: 'login' });
+      res.status(200).json({ data: findUser, message: 'login', refreshToken: refreshToken });
     } catch (error) {
       next(error);
     }
@@ -38,6 +38,18 @@ class AuthController {
 
       res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
       res.status(200).json({ data: logOutUserData, message: 'logout' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public refreshToken = (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const userData: User = req.user;
+      const cookie = this.authService.refreshToken(userData);
+
+      res.setHeader('Set-Cookie', [cookie]);
+      res.status(200).json({ message: 'refreshToken' });
     } catch (error) {
       next(error);
     }

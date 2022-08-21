@@ -5,7 +5,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { CreateLikedPostDto } from '@dtos/likedPost.dto';
 
 class LikedPostRoute implements Routes {
-  public path = '/likedPost';
+  public path = '/liked-post';
   public router = Router();
   public LikedPostController = new LikedPostController();
 
