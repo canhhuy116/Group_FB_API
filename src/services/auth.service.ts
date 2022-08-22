@@ -47,6 +47,10 @@ class AuthService {
     const findUser: User = await this.users.findOne({ where: { email: userData.email, password: userData.password } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
+    const client = await createRedisClient();
+    await client.del(findUser.id.toString());
+    await client.quit();
+
     return findUser;
   }
 
