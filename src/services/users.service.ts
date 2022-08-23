@@ -56,6 +56,18 @@ class UserService {
 
     return findUser;
   }
+
+  public async updateInfoUser(userId: number, userData: CreateUserDto): Promise<User> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+
+    if (userData.email || userData.groups) throw new HttpException(409, "You can't update email or groups");
+
+    const hashedPassword = await hash(userData.password, 10);
+    await this.users.update({ ...userData, password: hashedPassword }, { where: { id: userId } });
+
+    const updateUser: User = await this.users.findByPk(userId);
+    return updateUser;
+  }
 }
 
 export default UserService;
