@@ -68,6 +68,26 @@ class UserService {
     const updateUser: User = await this.users.findByPk(userId);
     return updateUser;
   }
+
+  public async addGroupToUser(userId: number, groupId: number): Promise<User> {
+    if (isEmpty(userId)) throw new HttpException(400, 'userId is empty');
+    if (isEmpty(groupId)) throw new HttpException(400, 'groupId is empty');
+
+    const findUser: User = await this.users.findByPk(userId);
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
+
+    const findGroup: User = await this.users.findByPk(groupId);
+    if (!findGroup) throw new HttpException(409, "Group doesn't exist");
+
+    if (findUser.groups.includes(groupId)) throw new HttpException(409, 'User already in group');
+
+    const newGroups = findUser.groups.concat(groupId);
+
+    await this.users.update({ groups: newGroups }, { where: { id: userId } });
+
+    const updateUser: User = await this.users.findByPk(userId);
+    return updateUser;
+  }
 }
 
 export default UserService;

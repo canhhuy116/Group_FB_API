@@ -73,6 +73,18 @@ class UsersController {
       next(error);
     }
   };
+
+  public addGroupToUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user.id;
+      const groupId = Number(req.params.groupId);
+      const addGroupToUserData: User = await this.userService.addGroupToUser(userId, groupId);
+
+      res.status(200).json({ data: addGroupToUserData, message: 'added' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default UsersController;

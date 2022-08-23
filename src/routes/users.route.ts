@@ -20,6 +20,7 @@ class UsersRoute implements Routes {
     this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), this.usersController.createUser);
     this.router.put(`${this.path}/:id(\\d+)`, validationMiddleware(CreateUserDto, 'body'), this.usersController.updateUser);
     this.router.patch(`${this.path}`, validationMiddleware(CreateUserDto, 'body', true), authMiddleware, this.usersController.updateInfoUser);
+    this.router.patch(`${this.path}/:groupId(\\d+)`, authMiddleware, this.usersController.addGroupToUser);
     this.router.delete(`${this.path}/:id(\\d+)`, this.usersController.deleteUser);
   }
 }
