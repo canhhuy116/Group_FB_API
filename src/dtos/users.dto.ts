@@ -1,10 +1,11 @@
-import { IsString, IsEmail, IsArray } from 'class-validator';
+import { IsString, IsEmail, Length } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
   public email: string;
 
   @IsString()
+  @Length(6)
   public password: string;
 
   @IsString()
@@ -12,7 +13,4 @@ export class CreateUserDto {
 
   @IsString()
   public address: string;
-
-  @IsArray()
-  public groups: number[];
 }

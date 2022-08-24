@@ -74,13 +74,36 @@ class UsersController {
     }
   };
 
+  public getGroupsOfUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user.id;
+      const getGroupsOfUserData: number[] = await this.userService.getGroupsOfUser(userId);
+
+      res.status(200).json({ data: getGroupsOfUserData, message: 'getGroupsOfUser' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public addGroupToUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const userId = req.user.id;
       const groupId = Number(req.params.groupId);
-      const addGroupToUserData: User = await this.userService.addGroupToUser(userId, groupId);
+      const addGroupToUserData: number[] = await this.userService.addGroupToUser(userId, groupId);
 
       res.status(200).json({ data: addGroupToUserData, message: 'added' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public removeGroupFromUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user.id;
+      const groupId = Number(req.params.groupId);
+      const removeGroupFromUserData: number[] = await this.userService.removeGroupFromUser(userId, groupId);
+
+      res.status(200).json({ data: removeGroupFromUserData, message: 'removed' });
     } catch (error) {
       next(error);
     }
